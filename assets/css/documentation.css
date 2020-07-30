@@ -1,0 +1,120 @@
+body.day-mode {
+    background-color: #fff;
+    color: #000;
+}
+
+body.night-mode {
+    background-color: #29292b;
+    color: #eee;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+div.content {
+    position: absolute;
+    padding: 10px;
+    margin-bottom: 200px;
+}
+
+@media only screen and (min-width: 600px) and (max-width: 900px) {
+    div.content {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1000px) {
+    div.content {
+        margin-left: 150px;
+        margin-right: 150px;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    div.content {
+        margin-left: 300px;
+        margin-right: 250px;
+    }
+}
+
+div#sidebar {
+    width: 280px;
+    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
+    position: fixed;
+    top: 0px;
+    background-color: #3c3c4c;
+    color: #eee;
+    z-index: 9999;
+    display: table;
+}
+
+div#sidebar h3 {
+    margin: 10px;
+}
+
+div#sidebar h3.title {
+    width: 70%;
+    display: inline-block;
+}
+
+div#sidebar h3.title a {
+    color: #eee;
+    text-decoration: none;
+}
+
+div#sidebar span.sidebar-btn {
+    color: #eee;
+    margin: 6px;
+}
+
+div #sidebar div#sidebar-head {
+    display: table-row;
+}
+
+span.sidebar-btn:hover {
+    cursor: pointer;
+}
+
+div#sidebar span#night-mode-btn {
+    display: none;
+}
+
+span#bars-btn-show {
+    display: none;
+    color: #000;
+    z-index: 9998;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+div#sidebar div#sidebar-content {
+    overflow: auto;
+    height: calc(100vh - 76px);
+    margin: 20px 0px 0px 0px;
+}
+
+div#sidebar ol a {
+    color: #eee;
+    text-decoration: none;
+}
+
+div#sidebar ol a:hover {
+    color: #eee;
+    text-decoration: underline;
+}

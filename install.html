@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Kafe - Installing</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Alexandre Plateau" />
+        <meta name="description" content="Website for the Kafe programming language" />
+        <meta name="keywords" content="kafe,language,programming,virtual machine" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="assets/css/themes/github.css" rel="stylesheet" type="text/css">
+
+        <script src="assets/js/rainbow.min.js"></script>
+        <script src="assets/js/language/generic.js"></script>
+        <script src="assets/js/language/shell.js"></script>
+    </head>
+    <body>
+        <div id="header-container">
+            <div id="header">
+                <img src="images/logo.png" id="logo" />
+
+                <div id="navigation">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="install.html" class="nav-link selected">Installing</a>
+                    <a href="documentation.html" class="nav-link">Documentation</a>
+                    <a href="kep.html" class="nav-link" title="Kafe Enhancement Proposals">KEP</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="main" class="container">
+            <div id="content">
+                <h1>Installing</h1>
+                <h2>From GitHub releases</h2>
+                <p>
+                    Coming soon
+                </p>
+                <br />
+
+                <h2>From the source</h2>
+                <h3>Needed packages</h3>
+                <ul>
+                    <li>CMake</li>
+                    <li>Python >= 3.6 (to run the tests)</li>
+                    <li>Java (to build the lexer/parser if you want to modify the grammar)</li>
+                </ul>
+
+                <h3>Procedure</h3>
+                <pre><code data-language="shell">user:~$ git clone -j$(nproc) --recursive git@github.com:Kafe-lang/Kafe.git
+user:~$ cd Kafe && mkdir build && cd build
+user:~/Kafe/build/$ cmake ..
+user:~/Kafe/build/$ make -j$(nproc) install
+</code></pre>
+
+                <h4>Building the lexer/parser</h4>
+                <i>Note</i>: Do it only if you changed the grammar<br />
+                <pre><code data-language="shell">user:~/Kafe/$ java -jar antlr/antlr-4.7.1-complete.jar Kafe.g4 \
+    -Dlanguage=Cpp -no-listener -visitor -o include/generated</code></pre>
+                
+                <h4>Running the tests</h4>
+                <pre><code data-language="shell">user:~$ git clone -j$(nproc) --recursive git@github.com:Kafe-lang/Kafe.git
+user:~$ cd Kafe && mkdir build && cd build
+user:~/Kafe/build/$ cmake .. -DTests=True
+user:~/Kafe/build/$ make -j$(nproc) && make KafeTests
+</code></pre>
+
+                <br /><hr /><br />
+
+                <h1>Syntaxic coloration</h1>
+                <h2>In nano</h2>
+                <p>
+                    Download the <code>kafe.nanorc</code> file here: <a href="/highlight/kafe.nanorc">/highlight/kafe.nanorc</a><br />
+                    Then <code>echo "include kafe.nanorc" >> ~/.nanorc</code>
+                </p>
+                <br />
+
+                <h2>In other IDE</h2>
+                Coming soon
+            </div>
+        </div>
+
+        <div id="footer">
+        </div>
+    </body>
+</html>

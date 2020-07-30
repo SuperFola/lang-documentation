@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Kafe - KEP 0001</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Alexandre Plateau" />
+        <meta name="description" content="Website for the Kafe programming language" />
+        <meta name="keywords" content="kafe,language,programming,virtual machine" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="../assets/css/main.css" rel="stylesheet" />
+        <link href="../assets/css/index.css" rel="stylesheet" />
+        <link href="../assets/css/kep.css" rel="stylesheet" />
+        <link href="../assets/css/themes/github.css" rel="stylesheet" type="text/css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="../assets/js/rainbow.min.js"></script>
+        <script src="../assets/js/language/generic.js"></script>
+        <script src="../assets/js/language/kafe.js"></script>
+        <script src="../assets/js/language/shell.js"></script>
+    </head>
+    <body>
+        <div id="header-container">
+            <div id="header">
+                <img src="../images/logo.png" id="logo" />
+
+                <div id="navigation">
+                    <a href="../index.html" class="nav-link">Home</a>
+                    <a href="../install.html" class="nav-link">Installing</a>
+                    <a href="../documentation.html" class="nav-link">Documentation</a>
+                    <a href="../kep.html" class="nav-link" title="Kafe Enhancement Proposals">KEP</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="main" class="container">
+            <div id="content">
+                <h1>KEP 0001</h1>
+
+                <table>
+                    <tr>
+                        <th>KEP</th>
+                        <td>0001</td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td id="kep_title">KEP Purpose and guidelines</td>
+                    </tr>
+                    <tr>
+                        <th>Author</th>
+                        <td id="kep_author">Alexandre Plateau, <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#101;&#120;&#112;&#108;&#116;&#46;&#100;&#101;&#118;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#101;&#120;&#112;&#108;&#116;&#46;&#100;&#101;&#118;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></td>
+                    </tr>
+                    <tr>
+                        <th>Created</th>
+                        <td id="kep_timestamp">18th August, 2018</td>
+                    </tr>
+                </table>
+
+
+                <h2>Summary</h2>
+                <div id="kep_toc">
+                    <ol><li><a href="#1">Definition</a></li><li><a href="#2">KEP types</a></li><li><a href="#3">KEP format</a><ol><li><a href="#3-1">Basic template</a></li><li><a href="#3-2">From Markdown to HTML</a></ol></li><li><a href="#4">KEP workflow</a><ol><li><a href="#4-1">The Kafe BDFL</a></li><li><a href="#4-2">Begin with an idea to improve the language</a></li><li><a href="#4-3">Submit your KEP for review</a></ol></li><li><a href="#5">Copyright</a></ol>
+                </div>
+
+                <h2>Abstract</h2>
+                <div id="kep_abstract">
+                    This KEP describes the purpose of KEPs, and defines guidelines for writing one.
+                </div>
+                
+                <h2>Content</h2>
+                <div id="kep_content">
+                    <h3 id="1">Definition</h3>
+<p >KEP stands for Kafe Enhancement Proposal. The sole purpose of a KEP is to define a (new) feature for Kafe, in a concise and technical way. A feature can be either a new mechanism for the language or a description of a bug (and why it should be considered as one) and how it could be fixed.</p>
+<p >All KEPs can be found in <a href="the corresponding repository" >https://github.com/Kafe-lang/enhancement-proposals</a> on GitHub, alongside their revision history.</p>
+<h3 id="2">KEP types</h3>
+<p >As said before, a KEP can be either :
+1. a new mechanism for the language
+2. a bug fix</p>
+<h3 id="3">KEP format</h3>
+<h4 id="3-1">Basic template</h4>
+<p >You can find it here : <a href="https://github.com/Kafe-lang/enhancement-proposals/raw/master/template.md" >template.md</a>.</p>
+<h4 id="3-2">From Markdown to HTML</h4>
+<p >This section is only useful if you want to check if any errors where triggered, which mean either the structure or the format wasn't respected.</p>
+<p >Download the Python script <code >md2html.py</code> from <a href="https://github.com/Kafe-lang/enhancement-proposals" >the GitHub</a> and run :</p>
+<pre ><code data-language="shell" >user:~$ python md2html.py kep-draft.md</code></pre>
+
+<p ><strong >Note</strong>: Python >= 3.6 needed</p>
+<p >It will produce a <code >kep-draft.html</code> which you will be able to visualize in your browser by running :
+<pre ><code data-language="shell" >user:~$ sensible-browser kep-draft.html</code></pre></p>
+<h3 id="4">KEP workflow</h3>
+<h4 id="4-1">The Kafe BDFL</h4>
+<p >The Kafe BDFL - where BDFL stands for Benevolent Dictator For Life - is Alexandre Plateau, the original creator of the language.</p>
+<h4 id="4-2">Begin with an idea to improve the language</h4>
+<p >The process of writing a KEP begins with an idea for Kafe. A single KEP must contain a single idea (or bug fix) to improve the language.</p>
+<p >If a KEP appears to be too broad, it should be rejected and split in multiple ones.</p>
+<p >To save you time, before writing your KEP, talk about it on our <a href="https://discord.gg/69xTwN2" >Discord server</a> to know if it could really be useful (or, in case of a bug fix, if it really appears as one to the rest of the community). This way we will be able to help you writing your KEP, which will make the reviewing process shorter for both of us.</p>
+<h4 id="4-3">Submit your KEP for review</h4>
+<p >Once your KEP is written and once you think it's ready to be shown, fork the <a href="https://github.com/Kafe-lang/enhancement-proposals" >KEP repository</a>, and add your KEP named as <code >kep-draft.md</code>.</p>
+<p >Then you can create a new pull request on GitHub to submit it to reviewers, who will review the structure, format, and errors.</p>
+<p >Once approved, it will be given a number and merged into the repository.</p>
+<h3 id="5">Copyright</h3>
+<p >This document has been placed in the public domain.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+        </div>
+    </body>
+</html>

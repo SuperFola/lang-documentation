@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Kafe - Documentation</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Alexandre Plateau" />
+        <meta name="description" content="Website for the Kafe programming language" />
+        <meta name="keywords" content="kafe,language,programming,virtual machine" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="assets/css/documentation.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="header-container">
+            <div id="header">
+                <img src="images/logo.png" id="logo" />
+
+                <div id="navigation">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="install.html" class="nav-link">Installing</a>
+                    <a href="documentation.html" class="nav-link selected">Documentation</a>
+                    <a href="kep.html" class="nav-link" title="Kafe Enhancement Proposals">KEP</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="main" class="container">
+            <div id="content">
+                <h1>Documentation</h1>
+                <p>
+                    This documentation is still under construction.
+                </p>
+                <p>
+                    <ol>
+                        <li><a href="documentation/lang/index.html">The Kafe language documentation</a></li>
+                        <li><a href="documentation/cli/index.html">Using the Kafe Command Line Interface</a>
+                            <ol>
+                                <li><a href="#">Element</a></li>
+                            </ol>
+                        </li>
+                        <li><a href="documentation/cup/index.html">Cup, the packages (plugins) manager</a>
+                            <ol>
+                                <li><a href="#">Element</a></li>
+                            </ol>
+                        </li>
+                        <li><a href="documentation/compiler/index.html">The Kafe Compiler</a>
+                            <ol>
+                                <li><a href="#">Element</a></li>
+                            </ol>
+                        </li>
+                        <li><a href="documentation/kafeasm/index.html">KafeASM, an assembler for Kafe</a>
+                            <ol>
+                                <li><a href="documentation/kafeasm/index.html#compiling">Compiling to Kafe bytecode</a></li>
+                                <li><a href="documentation/kafeasm/index.html#decompiling">Decompiling Kafe bytecode</a></li>
+                            </ol>
+                        </li>
+                        <li><a href="documentation/vm/index.html">The Kafe Virtual Machine: under the hood</a>
+                            <ol>
+                                <li><a href="documentation/vm/index.html#format">Basic format of a Kafe bytecode file</a>
+                                    <ol>
+                                        <li><a href="documentation/vm/index.html#bytecode-header">Header</a></li>
+                                        <li><a href="documentation/vm/index.html#segments">Segments</a></li>
+                                    </ol>
+                                </li>
+                                <li><a href="documentation/vm/internal.html">Internal behavior</a>
+                                    <ol>
+                                        <li><a href="documentation/vm/internal.html#load">LOAD_METHOD and LOAD_ATTR</a></li>
+                                        <li><a href="documentation/vm/internal.html#classes">Classes</a></li>
+                                        <li><a href="documentation/vm/internal.html#functions">Functions</a></li>
+                                    </ol>
+                                </li>
+                                <li><a href="documentation/vm/bytecode.html">Kafe bytecode specification</a>
+                                    <ol>
+                                        <li><a href="documentation/vm/bytecode.html#tables">Tables</a></li>
+                                        <li><a href="documentation/vm/bytecode.html#environments">Environments</a></li>
+                                        <li><a href="documentation/vm/bytecode.html#comparisons">Comparisons</a></li>
+                                        <li><a href="documentation/vm/bytecode.html#instructions">Instructions</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li><a href="documentation/embedding/plugins.html">How to make plugins</a>
+                            <ol>
+                                <li><a href="documentation/embedding/plugins.html#template">Plugin template</a></li>
+                            </ol>
+                        </li>
+                        <li><a href="documentation/embedding/index.html">Embedding Kafe in a C++ program</a>
+                            <ol>
+                                <li><a href="#">Element</a></li>
+                            </ol>
+                        </li>
+                    </ol>
+                </p>
+                <br />
+
+            </div>
+        </div>
+
+        <div id="footer">
+        </div>
+    </body>
+</html>

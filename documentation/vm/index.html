@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Kafe - Documentation</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Alexandre Plateau" />
+        <meta name="description" content="Website for the Kafe programming language" />
+        <meta name="keywords" content="kafe,language,programming,virtual machine" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="../../assets/css/main.css" rel="stylesheet" />
+        <link href="../../assets/css/documentation.css" rel="stylesheet" />
+        <link href="../../assets/css/themes/pastie.css" rel="stylesheet" type="text/css" id="rainbow-theme">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="../../assets/js/rainbow.min.js"></script>
+        <script src="../../assets/js/language/generic.js"></script>
+        <script src="../../assets/js/language/kafe.js"></script>
+    </head>
+    <body class="day-mode">
+        <span class="fas fa-bars sidebar-btn" id="bars-btn-show"></span>
+        <div id="sidebar">
+            <div id="sidebar-head">
+                <h3 class="title"><a href="../../documentation.html">Kafe</a></h3>
+                <span class="fas fa-bars sidebar-btn" id="bars-btn-hide"></span>
+                <span class="fas fa-moon sidebar-btn" id="night-mode-btn"></span>
+                <span class="fas fa-sun sidebar-btn" id="day-mode-btn"></span>
+                <hr />
+            </div>
+            <div id="sidebar-content">
+                <ol>
+                    <li><a href="index.html">The Kafe Virtual Machine: under the hood</a>
+                        <ol>
+                            <li><a href="index.html#format">Basic format of a Kafe bytecode file</a>
+                                <ol>
+                                    <li><a href="index.html#bytecode-header">Header</a></li>
+                                    <li><a href="index.html#segments">Segments</a></li>
+                                </ol>
+                            </li>
+                            <li><a href="internal.html">Internal behavior</a>
+                                <ol>
+                                    <li><a href="internal.html#load">LOAD_METHOD and LOAD_ATTR</a></li>
+                                    <li><a href="internal.html#classes">Classes</a></li>
+                                    <li><a href="internal.html#functions">Functions</a></li>
+                                </ol>
+                            </li>
+                            <li><a href="bytecode.html">Kafe bytecode specification</a>
+                                <ol>
+                                    <li><a href="bytecode.html#tables">Tables</a></li>
+                                    <li><a href="bytecode.html#environments">Environments</a></li>
+                                    <li><a href="bytecode.html#comparisons">Comparisons</a></li>
+                                    <li><a href="bytecode.html#instructions">Instructions</a></li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="content">
+            <h1>The Kafe Virtual Machine : under the hood</h1>
+
+            <h2 id="format">Basic format of a Kafe bytecode file</h2>
+
+            <h3 id="bytecode-header">Header</h3>
+
+            <table>
+                <tr>
+                    <th>Size</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>4 bytes</td>
+                    <td>"kafe" : magic constant to be sure we are trying to run a kafe bytecode</td>
+                </tr>
+                <tr>
+                    <td>3 bytes</td>
+                    <td>Major, Minor, Patch : KVM version used when the file was created</td>
+                </tr>
+                <tr>
+                    <td>1 byte</td>
+                    <td>Padding</td>
+                </tr>
+                <tr>
+                    <td>4 bytes</td>
+                    <td>timestamp (unix format) (we could consider using a 8 bytes timestamp to avoid the 2038 bug)</td>
+                </tr>
+                <tr>
+                    <td>512 bytes</td>
+                    <td>MD5 hash of the file</td>
+                </tr>
+            </table>
+
+            <br />
+
+            <h3 id="segments">Segments</h3>
+
+            <ol>
+                <li>Constants table
+                    <ol>
+                        <li>Number of constants on 2 bytes</li>
+                        <li>constants
+                            <ol>
+                                <li>type, on 1 byte</li>
+                                <li>value, encoded regarding its type</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>Symbols table
+                    <ol>
+                        <li>Number of symbols on 2 bytes</li>
+                        <li>symbols
+                            <ol>
+                                <li>symbol name, null-terminated</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>Attributes table
+                    <ol>
+                        <li>Number of attributes on 2 bytes</li>
+                        <li>attributes
+                            <ol>
+                                <li>attribute name, null-terminated</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>Classes table
+                    <ol>
+                        <li>Number of classes on 2 bytes</li>
+                        <li>classes
+                            <ol>
+                                <li>Number of attributes on 2 bytes</li>
+                                <li>class name (constant index, on 2 bytes)</li>
+                                <li>attributes
+                                    <ol>
+                                        <li>name (constant index, on 2 bytes)</li>
+                                        <li>value (constant index, on 2 bytes)</li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>Plugins table
+                    <ol>
+                        <li>Number of plugins on 2 bytes</li>
+                        <li>plugins
+                            <ol>
+                                <li>plugin name</li>
+                                <li>Kafe VM version required</li>
+                                <li>comparison operator on 1 byte (cf <a href="bytecode.html#comparisons">bytecode.html#comparisons</a>)</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>Code segment(s)
+                    <ol>
+                        <li>Number of opcodes on 2 bytes</li>
+                        <li>opcodes
+                            <ol>
+                                <li>opcode, on 1 byte</li>
+                                <li>argument (0 or 1, depends on the opcode), on 2 bytes</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+        <script src="../../assets/js/documentation.js"></script>
+    </body>
+</html>

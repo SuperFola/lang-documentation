@@ -1,0 +1,28 @@
+syntax "Kafe" "\.kafe$"
+
+## built-in objects
+color brightmagenta "\<(self|true|false)\>"
+## special method names
+color brightcyan "\<(__add__|__and__|__concat__|__div__|__divmod__|__eq__|__float__|__geq__|__gt__|__init__|__int__|__inv__|__leq__|__lshift__|__lw__|__mod__|__mul__|__neg__|__neq__|__or__|__pow__|__rshift__|__str__|__sub__|__xor__)\>"
+## keywords
+color brightblue "\<(break|cls|dyn|fun|elif|else|end|if|ret|then|while)\>"
+color brightcyan "\<(assert|type|import|print|input|int|float|str|bool|list)\>"
+
+## operators
+color brightyellow "[.,+*|=!\%@]" "<" ">" "/" "-" "&"
+
+## parentheses
+color yellow "[()]" "\[" "\]"
+
+## numbers
+icolor brightred "\b(([1-9][0-9]+)|0+)\.[0-9]+\b" "\b([1-9][0-9]*)\b" "\b0o?[0-7]*\b" "\b0x[1-9a-f][0-9a-f]*\b" "\b0b[01]+\b"
+
+## strings
+color yellow "['][^']*[^\\][']"
+color yellow "["][^"]*[^\\]["]"
+
+## comments
+color green "#.*$"
+
+## Trailing spaces
+color ,green "[[:space:]]+$"

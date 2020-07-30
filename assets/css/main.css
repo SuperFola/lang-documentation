@@ -1,0 +1,118 @@
+@font-face {
+    font-family: 'Typold';
+    src: url('../Typold-Book500.otf');
+}
+
+body {
+    margin: 0px;
+    font-family: 'Typold';
+}
+
+img#logo {
+    width: 120px;
+    display: inline;
+}
+
+@media only screen and (min-width: 769px) {
+    div#header {
+        width: 60%;
+        margin: auto;
+    }
+}
+
+@media only screen and (min-width: 560px) and (max-width: 768px) {
+    div#header {
+        width: 100%;
+        margin:auto;
+    }
+
+    img#logo {
+        margin: 10px;
+    }
+}
+
+@media only screen and (max-width: 559px) {
+    img#logo {
+        width: 60px;
+        display: inline;
+        margin: 30px 10px 0px 30px;
+    }
+}
+
+div#navigation {
+    display: inline-block;
+    position: absolute;
+    top: 40px;
+    margin-left: 24px;
+}
+
+a.nav-link {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+a.selected {
+    color: #0092ea;
+    font-weight: bold;
+}
+
+div.container {
+    width: 70%;
+    margin: auto;
+}
+
+div#main {
+    margin-top: 32px;
+}
+
+div#content {
+    float: none;
+}
+
+hr {
+    width: 50%;
+}
+
+div#footer {
+    margin-top: 24px;
+    height: 120px;
+}
+
+a {
+    text-decoration: underline;
+    color: #0092ea;
+}
+
+pre {
+    word-break: normal !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
+    overflow: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border-bottom: 2px solid #aaa;
+    text-align: left;
+    padding: 8px;
+}
+
+ol {
+    counter-reset: item;
+    padding-left: 20px;
+}
+
+ol > li {
+    display: block;
+    margin: 4px;
+}
+
+ol > li:before {
+    content: counters(item, ".") ". ";
+    counter-increment: item;
+}

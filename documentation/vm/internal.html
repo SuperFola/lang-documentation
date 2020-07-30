@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Kafe - Documentation</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Alexandre Plateau" />
+        <meta name="description" content="Website for the Kafe programming language" />
+        <meta name="keywords" content="kafe,language,programming,virtual machine" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="../../assets/css/main.css" rel="stylesheet" />
+        <link href="../../assets/css/documentation.css" rel="stylesheet" />
+        <link href="../../assets/css/themes/pastie.css" rel="stylesheet" type="text/css" id="rainbow-theme">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="../../assets/js/rainbow.min.js"></script>
+        <script src="../../assets/js/language/generic.js"></script>
+        <script src="../../assets/js/language/kafe.js"></script>
+    </head>
+    <body class="day-mode">
+        <span class="fas fa-bars sidebar-btn" id="bars-btn-show"></span>
+        <div id="sidebar">
+            <div id="sidebar-head">
+                <h3 class="title"><a href="../../documentation.html">Kafe</a></h3>
+                <span class="fas fa-bars sidebar-btn" id="bars-btn-hide"></span>
+                <span class="fas fa-moon sidebar-btn" id="night-mode-btn"></span>
+                <span class="fas fa-sun sidebar-btn" id="day-mode-btn"></span>
+                <hr />
+            </div>
+            <div id="sidebar-content">
+                <ol>
+                    <li><a href="index.html">The Kafe Virtual Machine: under the hood</a>
+                        <ol>
+                            <li><a href="index.html#format">Basic format of a Kafe bytecode file</a>
+                                <ol>
+                                    <li><a href="index.html#bytecode-header">Header</a></li>
+                                    <li><a href="index.html#segments">Segments</a></li>
+                                </ol>
+                            </li>
+                            <li><a href="internal.html">Internal behavior</a>
+                                <ol>
+                                    <li><a href="internal.html#load">LOAD_METHOD and LOAD_ATTR</a></li>
+                                    <li><a href="internal.html#classes">Classes</a></li>
+                                    <li><a href="internal.html#functions">Functions</a></li>
+                                </ol>
+                            </li>
+                            <li><a href="bytecode.html">Kafe bytecode specification</a>
+                                <ol>
+                                    <li><a href="bytecode.html#tables">Tables</a></li>
+                                    <li><a href="bytecode.html#environments">Environments</a></li>
+                                    <li><a href="bytecode.html#comparisons">Comparisons</a></li>
+                                    <li><a href="bytecode.html#instructions">Instructions</a></li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="content">
+            <h1>Internal behavior</h1>
+            Coming soon.
+            <br />
+
+            <h2 id="load">LOAD_METHOD and LOAD_ATTR</h2>
+            Coming soon.
+            <br />
+
+            <h2 id="classes">Classes</h2>
+            Each object has <code>__name__</code> (the name of the original class) and <code>__id__</code> (the ID in the classes table)
+            as their default attributes.<br />
+            If we have <code>something</code> as an instance of a class <code>D</code>, <code>type(something)</code> will return
+            <code>D0</code> (0 being the id of the class in the classes table, in this example this is 0).
+            <br />
+
+            <h2 id="functions">Functions</h2>
+            Coming soon.
+        </div>
+        <script src="../../assets/js/documentation.js"></script>
+    </body>
+</html>

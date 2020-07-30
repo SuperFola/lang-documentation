@@ -1,0 +1,467 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Kafe - Documentation</title>
+        <meta charset="utf-8" />
+        <meta name="author" content="Alexandre Plateau" />
+        <meta name="description" content="Website for the Kafe programming language" />
+        <meta name="keywords" content="kafe,language,programming,virtual machine" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="../../assets/css/main.css" rel="stylesheet" />
+        <link href="../../assets/css/documentation.css" rel="stylesheet" />
+        <link href="../../assets/css/themes/pastie.css" rel="stylesheet" type="text/css" id="rainbow-theme">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="../../assets/js/rainbow.min.js"></script>
+        <script src="../../assets/js/language/generic.js"></script>
+        <script src="../../assets/js/language/kafe.js"></script>
+    </head>
+    <body class="day-mode">
+        <span class="fas fa-bars sidebar-btn" id="bars-btn-show"></span>
+        <div id="sidebar">
+            <div id="sidebar-head">
+                <h3 class="title"><a href="../../documentation.html">Kafe</a></h3>
+                <span class="fas fa-bars sidebar-btn" id="bars-btn-hide"></span>
+                <span class="fas fa-moon sidebar-btn" id="night-mode-btn"></span>
+                <span class="fas fa-sun sidebar-btn" id="day-mode-btn"></span>
+                <hr />
+            </div>
+            <div id="sidebar-content">
+                <ol>
+                    <li><a href="index.html">The Kafe Virtual Machine: under the hood</a>
+                        <ol>
+                            <li><a href="index.html#format">Basic format of a Kafe bytecode file</a>
+                                <ol>
+                                    <li><a href="index.html#bytecode-header">Header</a></li>
+                                    <li><a href="index.html#segments">Segments</a></li>
+                                </ol>
+                            </li>
+                            <li><a href="internal.html">Internal behavior</a>
+                                <ol>
+                                    <li><a href="internal.html#load">LOAD_METHOD and LOAD_ATTR</a></li>
+                                    <li><a href="internal.html#classes">Classes</a></li>
+                                    <li><a href="internal.html#functions">Functions</a></li>
+                                </ol>
+                            </li>
+                            <li><a href="bytecode.html">Kafe bytecode specification</a>
+                                <ol>
+                                    <li><a href="bytecode.html#tables">Tables</a></li>
+                                    <li><a href="bytecode.html#environments">Environments</a></li>
+                                    <li><a href="bytecode.html#comparisons">Comparisons</a></li>
+                                    <li><a href="bytecode.html#instructions">Instructions</a></li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="content">
+            <h1>Kafe bytecode specification</h1>
+
+            <h2 id="tables">Tables</h2>
+
+            <h3>Constants</h3>
+
+            An array of all the static values used in a program.<br /><br />
+            Example (Python) :<br />
+            <pre><code data-language="python" data-delay="3">a = 10
+b = 15
+c = "hello"</code></pre>
+            The constants table will contain the following : <code>[10, 15, "hello"]</code>.
+            This allows for referring to constants from their index in the table instead of
+            redefining them every time we need them.
+
+            <h3>Symbols and attributes</h3>
+
+            <i>Nota bene</i>: They are both described in this section because they work the same way.<br /><br />
+            An array to store the names of all the symbols (or attributes) used.<br /><br />
+            Example (Python) :<br />
+            <pre><code data-language="python" data-delay="3">a = 10
+b = 15
+c = "hello"
+class d:
+    def __init__(self):
+        pass
+    def method(self):
+        pass</code></pre>
+            The symbols table will contain the following : <code>["a", "b", "c", "d"]</code>,
+            and the attributes table : <code>["__init__", "method"]</code>.
+            This allows for referring to symbols from their index in the table instead of having them everywhere in the bytecode, which would make it heavier.
+
+            <h3>Classes</h3>
+            The classes table is located at the beginning of the file to automatically load them all. It enhances the performances when creating an object of type <code>class</code>
+            defined before, because the Virtual Machine will only have to copy the C++ representation of the class, instead of reading a whole class definition table each time it needs to.
+            <br />
+
+            <h2 id="environments">Environments</h2>
+            An environment is basically a dictionnary mapping symbols to values (to store the values of variables).<br /><br />
+            Example (Python) :<br />
+            <pre><code data-language="python" data-delay="3">a = 10
+b = 15
+c = "hello"
+
+### first step
+
+def foo():
+    # new scope
+    d = 42
+
+    ### second step</code></pre>
+            At the first step, our environments table will look like this : <code>[{"a": 10, "b": 15, "c": "hello"}]</code>.<br />
+            At the second step, it will be : <code>[{"a": 10, "b": 15, "c": "hello"}, {"d": 42}]</code>.
+            <br />
+
+            <h2 id="comparisons">Comparisons</h2>
+            Instead of implementing an opcode for each comparison operator, we are using integer constants, listed below.<br /><br />
+
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Hexadecimal code</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>OP_LOWER</td>
+                    <td>0x01</td>
+                    <td>Push <code>TS < TS1</code></td>
+                </tr>
+                <tr>
+                    <td>OP_LEQ</td>
+                    <td>0x02</td>
+                    <td>Push <code>TS <= TS1</code></td>
+                </tr>
+                <tr>
+                    <td>OP_GREATER</td>
+                    <td>0x03</td>
+                    <td>Push <code>TS > TS1</code></td>
+                </tr>
+                <tr>
+                    <td>OP_GEQ</td>
+                    <td>0x04</td>
+                    <td>Push <code>TS >= TS1</code></td>
+                </tr>
+                <tr>
+                    <td>OP_EQ</td>
+                    <td>0x05</td>
+                    <td>Push <code>TS == TS1</code></td>
+                </tr>
+                <tr>
+                    <td>OP_NEQ</td>
+                    <td>0x06</td>
+                    <td>Push <code>TS != TS1</code></td>
+                </tr>
+            </table>
+
+            <br />
+
+            <h2 id="instructions">Instructions</h2>
+
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Argument(s)</th>
+                    <th>Hexadecimal code</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>NOP</td>
+                    <td>none</td>
+                    <td>0x00</td>
+                    <td>Do nothing</td>
+                </tr>
+                <tr>
+                    <td>POP</td>
+                    <td>none</td>
+                    <td>0x01</td>
+                    <td>Pop TS</td>
+                </tr>
+                <tr>
+                    <td>ROT2</td>
+                    <td>none</td>
+                    <td>0x02</td>
+                    <td>Perform a permutation between TS and TS1</td>
+                </tr>
+                <tr>
+                    <td>DUP</td>
+                    <td>none</td>
+                    <td>0x03</td>
+                    <td>Duplicate TS</td>
+                </tr>
+                <tr>
+                    <td>HALT</td>
+                    <td>none</td>
+                    <td>0x04</td>
+                    <td>Stop the execution of the program</td>
+                </tr>
+                <tr>
+                    <td>LOAD_CST</td>
+                    <td>n</td>
+                    <td>0x10</td>
+                    <td>Push the constant <code>n</code> on the stack</td>
+                </tr>
+                <tr>
+                    <td>LOAD_ATTR</td>
+                    <td>sym</td>
+                    <td>0x11</td>
+                    <td>Load the attribute <code>sym</code>, from TS, on the stack</td>
+                </tr>
+                <tr>
+                    <td>LOAD_METHOD</td>
+                    <td>sym</td>
+                    <td>0x12</td>
+                    <td>Load the attribute <code>sym</code>, from TS, on the stack and push TS on the stack again</td>
+                </tr>
+                <tr>
+                    <td>LOAD_SYM</td>
+                    <td>sym</td>
+                    <td>0x13</td>
+                    <td>Search for <code>sym</code> in the nearest scope and push it on the stack. Raise an exception if <code>sym</code> does not exist</td>
+                </tr>
+                <tr>
+                    <td>LOAD_CLASS</td>
+                    <td>class index</td>
+                    <td>0x14</td>
+                    <td>Load class <code>class index</code> from the class table</td>
+                </tr>
+                <tr>
+                    <td>LOAD_GLOBAL</td>
+                    <td>n</td>
+                    <td>0x15</td>
+                    <td>Load global <code>n</code> and push it on the stack (can be a builtin function or a plugin function)</td>
+                </tr>
+                <tr>
+                    <td>LET</td>
+                    <td>sym</td>
+                    <td>0x16</td>
+                    <td>Create <code>sym</code> in the current scope and push TS in it</td>
+                </tr>
+                <tr>
+                    <td>STORE</td>
+                    <td>sym</td>
+                    <td>0x17</td>
+                    <td>Search for <code>sym</code> in the nearest scope to push TS in it. Raise an exception if <code>sym</code> does not exist</td>
+                </tr>
+                <tr>
+                    <td>STORE_ATTR</td>
+                    <td>sym</td>
+                    <td>0x18</td>
+                    <td>Create <code>sym</code> in TS1 and store TS in it. Can also store if <code>sym</code> already exists in TS1</td>
+                </tr>
+                <tr>
+                    <td>CALL</td>
+                    <td>n</td>
+                    <td>0x19</td>
+                    <td>Apply <code>n</code> elements from the top of the stack to a function address located at <code>n+1</code> on the stack. Save the address from where it was called. Raise an exception if TS<code>n+1</code> does not point to a code segment</td>
+                </tr>
+                <tr>
+                    <td>RET</td>
+                    <td>n</td>
+                    <td>0x1a</td>
+                    <td>Return to the last saved address, if there is one. Then, push the last n elements from the local stack to the stack of the caller. Otherwise, raise an exception</td>
+                </tr>
+                <tr>
+                    <td>MAKE_CLASS</td>
+                    <td>address</td>
+                    <td>0x1b</td>
+                    <td>Create a class from a given class definition table (located at <code>address</code>)</td>
+                </tr>
+                <tr>
+                    <td>TYPEOF</td>
+                    <td>none</td>
+                    <td>0x1c</td>
+                    <td>Push a string constant onto the stack, representing the type of TS</td>
+                </tr>
+                <tr>
+                    <td>COMPARE_OP</td>
+                    <td>op</td>
+                    <td>0x20</td>
+                    <td>Call comparison operator <code>op</code> (see above) with <code>TS op TS1</code></td>
+                </tr>
+                <tr>
+                    <td>JUMP_ABS</td>
+                    <td>address</td>
+                    <td>0x30</td>
+                    <td>Absolute jump to <code>address</code></td>
+                </tr>
+                <tr>
+                    <td>POP_JUMP_IF_TRUE</td>
+                    <td>address</td>
+                    <td>0x31</td>
+                    <td>Pop, then jump to <code>address</code> if value is true</td>
+                </tr>
+                <tr>
+                    <td>POP_JUMP_IF_FALSE</td>
+                    <td>address</td>
+                    <td>0x32</td>
+                    <td>Pop, then jump to <code>address</code> if value is false</td>
+                </tr>
+                <tr>
+                    <td>JUMP_FORWARD</td>
+                    <td>offset</td>
+                    <td>0x33</td>
+                    <td>Jump over <code>offset</code> bytes, forward, from current position in bytecode</td>
+                </tr>
+                <tr>
+                    <td>BINARY_ADD</td>
+                    <td>none</td>
+                    <td>0x40</td>
+                    <td>Pop TS and TS1, push <code>TS+TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_SUB</td>
+                    <td>none</td>
+                    <td>0x41</td>
+                    <td>Pop TS and TS1, push <code>TS-TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_MUL</td>
+                    <td>none</td>
+                    <td>0x42</td>
+                    <td>Pop TS and TS1, push <code>TS*TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_DIV</td>
+                    <td>none</td>
+                    <td>0x43</td>
+                    <td>Pop TS and TS1, push <code>TS/TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_REALDIV</td>
+                    <td>none</td>
+                    <td>0x44</td>
+                    <td>Pop TS and TS1, push <code>TS//TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_POW</td>
+                    <td>none</td>
+                    <td>0x45</td>
+                    <td>Pop TS and TS1, push <code>pow(TS,TS1)</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_MOD</td>
+                    <td>none</td>
+                    <td>0x46</td>
+                    <td>Pop TS and TS1, push <code>TS%TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_BITOR</td>
+                    <td>none</td>
+                    <td>0x47</td>
+                    <td>Pop TS and TS1, push <code>TS|TS1</code> (number, bool or list)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_BITAND</td>
+                    <td>none</td>
+                    <td>0x48</td>
+                    <td>Pop TS and TS1, push <code>TS&amp;TS1</code> (number, bool or list)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_BITXOR</td>
+                    <td>none</td>
+                    <td>0x49</td>
+                    <td>Pop TS and TS1, push <code>TS^TS1</code> (number, bool or list)</td>
+                </tr>
+                <tr>
+                    <td>UNARY_BITINV</td>
+                    <td>none</td>
+                    <td>0x4a</td>
+                    <td>Pop TS, push <code>~TS</code> (number or bool)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_LSHIFT</td>
+                    <td>none</td>
+                    <td>0x4b</td>
+                    <td>Pop TS and TS1, push <code>TS&lt;&lt;TS1</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>BINARY_RSHIFT</td>
+                    <td>none</td>
+                    <td>0x4c</td>
+                    <td>Pop TS and TS1, push <code>TS>>TS1</code></td>
+                </tr>
+                <tr>
+                    <td>UNARY_MINUS</td>
+                    <td>none</td>
+                    <td>0x4d</td>
+                    <td>Pop TS, push <code>-TS</code> (number)</td>
+                </tr>
+                <tr>
+                    <td>UNARY_NOT</td>
+                    <td>none</td>
+                    <td>0x4e</td>
+                    <td>Pop TS, push <code>!TS</code> (bool)</td>
+                </tr>
+                <tr>
+                    <td>NEW_ENV</td>
+                    <td>none</td>
+                    <td>0x50</td>
+                    <td>Create a new environment and put it onto the environments stack</td>
+                </tr>
+                <tr>
+                    <td>POP_ENV</td>
+                    <td>none</td>
+                    <td>0x51</td>
+                    <td>Pop an environment from the environments stack</td>
+                </tr>
+                <tr>
+                    <td>CREATE_LIST</td>
+                    <td>n</td>
+                    <td>0x60</td>
+                    <td>Create a list with n elements from the top of the stack, and push it as TS</td>
+                </tr>
+                <tr>
+                    <td>TO_INT</td>
+                    <td>none</td>
+                    <td>0x61</td>
+                    <td>Convert TS to int and push it to the stack. Raise an exception if not possible</td>
+                </tr>
+                <tr>
+                    <td>TO_FLOAT</td>
+                    <td>none</td>
+                    <td>0x62</td>
+                    <td>Convert TS to float and push it to the stack. Raise an exception if not possible</td>
+                </tr>
+                <tr>
+                    <td>TO_STR</td>
+                    <td>none</td>
+                    <td>0x63</td>
+                    <td>Convert TS to str and push it to the stack. Raise an exception if not possible</td>
+                </tr>
+                <tr>
+                    <td>TO_BOOL</td>
+                    <td>none</td>
+                    <td>0x64</td>
+                    <td>Convert TS to bool and push it to the stack. Raise an exception if not possible</td>
+                </tr>
+                <tr>
+                    <td>LIST_LEN</td>
+                    <td>none</td>
+                    <td>0x70</td>
+                    <td>Push the length of TS which must be a list</td>
+                </tr>
+                <tr>
+                    <td>LIST_POP</td>
+                    <td>n</td>
+                    <td>0x71</td>
+                    <td>Pop TS[n] and push back TS to the stack</td>
+                </tr>
+                <tr>
+                    <td>LIST_POPBACK</td>
+                    <td>none</td>
+                    <td>0x72</td>
+                    <td>Pop last element of TS and push back TS to the stack</td>
+                </tr>
+                <tr>
+                    <td>LIST_AT</td>
+                    <td>n</td>
+                    <td>0x73</td>
+                    <td>Push TS[n] to the stack</td>
+                </tr>
+            </table>
+        </div>
+        <script src="../../assets/js/documentation.js"></script>
+    </body>
+</html>

@@ -1,0 +1,15 @@
+img#code_sample {
+    display: inline-block;
+    width: 186px;
+    height: 148px;
+    float: left;
+    margin-right: 24px;
+}
+
+div#tag-line {
+    float: right;
+}
+
+div#clear-tag-line {
+    height: 60px;
+}
